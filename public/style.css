@@ -1,5 +1,30 @@
 body { 
-    background-color: #F2F6D0 
+    background-color: #e0e0e0
+}
+
+.brand-logo {
+    margin-left: 20px;
+}
+
+.mt {
+    margin-top: 20px;
+}
+
+a {
+    color: #00796b;
+}
+
+.card-content {
+    font-size: 18px;
+}
+
+#addNote {
+    margin-right: 20px;
+}
+
+#notes {
+    float: right;
+    width: 30%;
 }
 
 /* #wrapper {
@@ -9,17 +34,12 @@ body {
     padding-top: 5%;
 } */
 
-#articles {
+/* #articles {
     display: inline-block;
     overflow: auto;
-}
+} */
 
-#notes {
-    float: right;
-    width: 30%;
-}
-
-textarea, input {
+/* textarea, input {
     display: block;
     width: 100%;
     background-color: #FCF5C7;
@@ -33,4 +53,4 @@ input {
 textarea {
     height: 200px;
     font-size: 18px;
-}
+} */
