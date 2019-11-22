@@ -6,12 +6,16 @@ const cheerio = require("cheerio");
 
 const db = require("./models")
 
-// const MONGODB_URI = process.env.MONGODB_URI || "mongo://localhost/scrapper";
-// mongoose.connect(MONGODB_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(
+    process.env.MONGODB_URI ||
+    "mongodb://localhost/scrapper",
+    {
+        useMongoClient: true
+    }
+);
 
 const PORT = 3000;
-
-mongoose.connect("mongodb://localhost/scrapper", { useNewUrlParser: true });
 
 const app = express();
 
@@ -65,17 +69,17 @@ app.get("/api/scrape", function (req, res) {
     res.json({});
 });
 
-app.get("/api/articles/:id", function(req, res) {
+app.get("/api/articles/:id", function (req, res) {
 
     db.Article.findOne({ _id: req.params.id })
-      .populate("note")
-      .then(function(dbArticle) {
-        res.json(dbArticle);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  });
+        .populate("note")
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
 
 app.post("/api/articles/:id", function (req, res) {
     db.Note.create(req.body)
