@@ -17,7 +17,7 @@ var ArticleSchema = new Schema({
   },
   image: {
     type: String,
-    required: true
+    required: false
   },
   comment: {
     type: Schema.Types.ObjectId,
