@@ -32,7 +32,7 @@ app.get("/api/articles", (req, res) => {
         .catch(err => res.json(err));
 });
 
-app.get("/api/scrape", function (req, res) {
+app.get("/api/scrape", (req, res) => {
 
     axios.get("http://www.npr.org")
         .then(function (response) {
@@ -69,7 +69,7 @@ app.get("/api/scrape", function (req, res) {
     res.json({});
 });
 
-app.get("/api/articles/:id", function (req, res) {
+app.get("/api/articles/:id", (req, res) => {
 
     db.Article.findOne({ _id: req.params.id })
         .populate("note")
@@ -81,18 +81,31 @@ app.get("/api/articles/:id", function (req, res) {
         });
 });
 
-app.post("/api/articles/:id", function (req, res) {
+app.post("/api/articles/:id", (req, res) => {
     db.Note.create(req.body)
-        .then(function (dbNote) {
+        .then((dbNote) => {
             return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
         })
-        .then(function (dbArticle) {
-            res.stat(200);
+        .then((dbArticle) => {
+            res.stat({ id: dbNote._id });
         })
-        .catch(function (err) {
+        .catch((err) => {
             res.json(err);
         });
 });
+
+app.delete("/api/articles/:id", (req, res) => {
+    db.Article.findOne({ _id: req.params.id })
+        .then((data) => {
+            return db.Note.updateOne({ _id: data.note }, { body: "" });
+        })
+        .then(() => {
+            res.json(200);
+        })
+        .catch((err) => {
+            res.json(err)
+        });
+})
 
 app.get('*', (req, res) => {
     res.redirect('/');

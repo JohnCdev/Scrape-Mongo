@@ -37,9 +37,10 @@ $(document).on("click", "#loadButton", () => {
         $('<div class="card-image"></div>').append($('<img>').attr("src", e.image)),
         $('<h3>').append($('<a>').attr("href", e.link).attr("target", "_blank").text(e.title)),
         $('<div class="card-content"></div>').append($('<p>').text(e.summary)),
-        $('<div class="card-action"></div>')
+        $('<div class="card-action" id="cardButtons"></div>')
           .append($("<a data-id='" + e._id + "' class='waves-effect waves-light btn pink lighten-2' id='addNote'><i class='material-icons left'>note_add</i>Add Note</a>"))
           .append($("<a data-id='" + e._id + "' class='waves-effect waves-light btn pink lighten-2' id='seeNote'><i class='material-icons left'>remove_red_eye</i>See Note</a>"))
+          .append($("<a data-id='" + e._id + "' class='waves-effect waves-light btn pink lighten-2' id='deleteNote'><i class='material-icons left'>delete_forever</i>Delete Note</a>"))
       ]);
 
       $card.append($cardContent)
@@ -58,6 +59,7 @@ $(document).on("click", "#addNote", function () {
     .append("<a data-id='" + thisId + "' class='waves-effect waves-light btn pink lighten-2' id='savenote'><i class='material-icons left'>save</i>Save Note</a>")
 
   $($noteArea).appendTo($(this).parent());
+  
 });
 
 $(document).on("click", "#savenote", function () {
@@ -71,7 +73,7 @@ $(document).on("click", "#savenote", function () {
     }
   })
     .then(function (data) {
-      $("#noteArea").remove();
+      $("#noteArea").remove(); 
       loadNote(thisId);
     });
 });
@@ -80,6 +82,18 @@ $(document).on("click", "#seeNote", function () {
   var thisId = $(this).attr("data-id");
   loadNote(thisId);
 });
+
+$(document).on("click", "#deleteNote", function () {
+  var thisId = $(this).attr("data-id");
+
+  $.ajax({
+    method: "DELETE",
+    url: '/api/articles/' + thisId
+  })
+    .then(function (data) {
+      $('#note').remove();
+    });
+})
 
 function loadNote(id) {
   $.ajax({
